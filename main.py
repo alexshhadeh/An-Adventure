@@ -65,11 +65,12 @@ def findPaths(maze, path):
 
 
 def isInMaze(point, maze):
-	try:
-		maze[point['x']][point['y']]
-	except IndexError:
-		return False
-	return True
+    if point['x'] < 0 or point['y'] < 0:
+        return False
+    elif point['x'] > len(maze)-1 or point['y'] > len(maze)-1:
+        return False
+    else:
+        return True
 
 def filterPoints(points, path):
 	filteredPoints=[point for point in points if point not in path]
