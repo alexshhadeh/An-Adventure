@@ -4,6 +4,10 @@ import os
 def handle_error(error, tile=""):
     os.system('cls')
     match error:
+        case "empty_file":
+            print("File is empty.")
+        case "maze_one_line":
+            print("Maze cannot be one line.")
         case "maze_not_rectangle":
             print('Maze must have rectangular shape.')
         case "unknown_tile":
@@ -16,17 +20,20 @@ def handle_error(error, tile=""):
 
 
 def check_tiles(maze):
-    if maze[1][0] != '.':
+    if maze[1][0] != '-':
         handle_error("starting_tile_not_found")
     for i in range(len(maze)):
         for j in range(len(maze[i])):
-            if maze[i][j] != 'x' and maze[i][j] != '.':
+            if maze[i][j] != 'x' and maze[i][j] != '-':
                 handle_error("unknown_tile", maze[i][j])
 
 
 class Maze:
 
     def __init__(self, path):
+        if os.stat(path).st_size == 0:
+            handle_error("empty_file")
+
         file = open(path, 'r')
         maze = []
         self.is_path_found = False
@@ -46,6 +53,9 @@ class Maze:
                     break
                 maze[line_row].append(line[j])
             line_row = line_row + 1
+
+        if line_row == 1:
+            handle_error("maze_one_line")
         check_tiles(maze)
         self.maze = maze
 
