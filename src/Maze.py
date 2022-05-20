@@ -87,10 +87,10 @@ class Maze:
         time.sleep(1)
 
     def adventure(self, short_path, cs_user: CombatSystem):
-        cs_user.character_select()
-        self.is_path_found=True
         if len(short_path) == 1 or len(short_path) == 0:
             handle_error("no_exit")
+        cs_user.character_select()
+        self.is_path_found=True
         encounters_number = len(short_path) // 2
         if encounters_number == 0:
             encounters_number += 1
