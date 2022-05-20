@@ -10,7 +10,7 @@ A console game which finds the shortest path in a maze provided by the player. B
 
 ## How does the maze text file need to look like?
 
-The file contains the maze only. The maze consists of `X` and `-`, where `-` are the way, and `X` are the obstacles (user cannot move on them). The starting point must be (0, 1). Should you have any doubts, check out example mazes in the `maps` folder.
+The file contains the maze only. The maze consists of `X` and `-`, where `-` are the way, and `X` are the obstacles (user cannot move on them). The starting point must be second row, first column. Should you have any doubts, check out example mazes in the `maps` folder.
 
 ## How to play?
 
