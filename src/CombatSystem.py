@@ -38,6 +38,8 @@ class CombatSystem:
         for k, v in self.__roll_modifiers.items():
             print(k, v)
 
+        time.sleep(2)
+
     def generate_battle(self, monster=""):
         monsters = [
             "Goblin",
@@ -90,4 +92,6 @@ class CombatSystem:
             print("You have won the battle")
             self.victories += 1
         else:
-            print("You just got your ass beaten by", monster + "!")
+            print("You just got your ass beaten by the", monster + "!")
+
+        time.sleep(2)

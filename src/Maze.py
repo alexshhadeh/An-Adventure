@@ -81,8 +81,11 @@ class Maze:
             print(msg)
 
         print(str_out)
+        time.sleep(1)
 
     def adventure(self, short_path, cs_user: CombatSystem):
+        cs_user.character_select()
+        self.is_path_found=True
         encounters_number = len(short_path) // 2
         if encounters_number == 0:
             encounters_number += 1
@@ -91,8 +94,6 @@ class Maze:
             encounter_tiles.append(random.choice(short_path))
         enc_i = 0
         for tile in short_path:
-            if tile == encounter_tiles[enc_i]:
-                cs_user.generate_battle()
             for i in range(2):
                 current_tile = []
                 for k, v in tile.items():
@@ -102,8 +103,10 @@ class Maze:
             print("Going to: ({x},{y})".format(x=current_tile[0], y=current_tile[1]))
             time.sleep(1)
             self.__print_maze("You are at: ({x},{y})".format(x=current_tile[0], y=current_tile[1]))
+            if tile == encounter_tiles[enc_i]:
+                cs_user.generate_battle()
             time.sleep(1)
-            if enc_i < encounters_number-1:
+            if enc_i < encounters_number - 1:
                 enc_i += 1
 
         print("Hooray, you have found the exit!")
