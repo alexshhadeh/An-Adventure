@@ -1,107 +1,99 @@
-maze=[
-['XXXXX'],
-['---XX'],
-['XX-XX'],
-['XX---'],
-['XX-XX']
+rawMaze = [
+    ['XXXXX'],
+    ['---XX'],
+    ['XX-XX'],
+    ['XX---'],
+    ['XX-XX']
 ]
 
-for i, v in enumerate(maze):
-	#print(x)
-	maze[i]=list(v[0])
 
-def displayShortestPath(maze, startingPoint):
-	shortestPath=findShortestPath(paths)
-	mazeWithPath=plotPathOnMaze(shortestPath, maze)
-	print(mazeWithPath)
+class Maze:
+    def __init__(self, rawMaze, startingPoint) -> None:
+        self.maze = rawMaze
+        for i, v in enumerate(self.maze):
+            self.maze[i] = list(v[0])
+        self.startingPoint = startingPoint
+        self.branches = []
+        self.createdNewBranch = False
 
-def plotPathOnMaze(path, maze):
-	return mazeWithPath
+    def findAllPaths(self):
+        self.findPath([self.startingPoint])
+        while self.createdNewBranch:
+            self.createdNewBranch = False
+            for path in self.branches:
+                self.findPath(path)
 
-def findShortestPath(paths):
-	mini=paths[0]
-	for path in paths:
-		if len(path)<len(mini):
-			mini=path
-	return mini
+        return self.branches
 
-def addPoint(path, point):
-	path.append(point)
-	return path
+    def findShortestPath(self):
+        self.findAllPaths()
+        shortest = self.branches[0]
+        for path in self.branches:
+            if len(path) < len(shortest):
+                shortest = path
+        return shortest
 
-#one version of the algorithm: currently finds only one way out
-def findPath(maze, path):
-	currentPoint=path[len(path)-1]
-	foundPoints=filterPoints(findPoints(maze, currentPoint), path)
-	#print(foundPoints)
-	for point in foundPoints:
-		#print(point)
-		if isInMaze(point, maze):
-			path.append(point)
-			return findPath(maze, path)
-	return path
+    def findPath(self, path):
+        currentPoint = path[len(path)-1]
+        foundPoints = self.filterPoints(self.findPoints(currentPoint), path)
 
-#second version of the algorithm: finds all of the coordinates but unsorted
-def findPaths(maze, path):
-	paths=[]
-	currentPoint=path[len(path)-1]
-	foundPoints=filterPoints(findPoints(maze, currentPoint), path)
-	if len(foundPoints)==1:
-		if isInMaze(foundPoints[0], maze):
-			findPaths(maze, addPoint(path, foundPoints[0]))
-	if len(foundPoints)==2:
-		if isInMaze(foundPoints[0], maze):
-			findPaths(maze, addPoint(path, foundPoints[0]))
-		if isInMaze(foundPoints[1], maze):
-			findPaths(maze, addPoint(path, foundPoints[1]))
-	if len(foundPoints)==3:
-		if isInMaze(foundPoints[0], maze):
-			findPaths(maze, addPoint(path, foundPoints[0]))
-		if isInMaze(foundPoints[1], maze):
-			findPaths(maze, addPoint(path, foundPoints[1]))
-		if isInMaze(foundPoints[2], maze):
-			findPaths(maze, addPoint(path, foundPoints[2]))
-	return path
+        if len(foundPoints) > 1:
+            for _, point in enumerate(foundPoints, 1):
+                if self.isInMaze(point):
+                    branch = list(path)
+                    branch.append(point)
+                    self.branches.append(branch)
+                    self.createdNewBranch = True
 
+        for point in foundPoints:
+            if self.isInMaze(point):
+                path.append(point)
+                return self.findPath(path)
+        return path
 
-def isInMaze(point, maze):
-    if point['x'] < 0 or point['y'] < 0:
+    """def findPath(maze, path):
+		currentPoint=path[len(path)-1]
+		foundPoints=filterPoints(findPoints(maze, currentPoint), path)
+		for point in foundPoints:
+			if isInMaze(point, maze):
+				path.append(point)
+				return findPath(maze, path)
+		return path"""
+
+    def isInMaze(self, point):
+        if point['x'] < 0 or point['y'] < 0:
+            return False
+        elif point['x'] > len(self.maze)-1 or point['y'] > len(self.maze)-1:
+            return False
+        else:
+            return True
+
+    def filterPoints(self, points, path):
+        filteredPoints = [point for point in points if point not in path]
+        return filteredPoints
+
+    def findPoints(self, startingPoint):
+        directions = [[0, -1], [0, 1], [-1, 0], [1, 0]]
+        foundPoints = []
+        for direction in directions:
+            checkedPoint = {
+                'x': startingPoint['x']+direction[0],
+                'y': startingPoint['y']+direction[1]
+            }
+            try:
+                pointOnMap = self.maze[checkedPoint['x']][checkedPoint['y']]
+                if self.pointIsAccessible(pointOnMap):
+                    foundPoints.append(checkedPoint)
+            except IndexError:
+                foundPoints.append(checkedPoint)
+        return foundPoints
+
+    def pointIsAccessible(self, pointOnMap):
+        if(pointOnMap == "-"):
+            return True
         return False
-    elif point['x'] > len(maze)-1 or point['y'] > len(maze)-1:
-        return False
-    else:
-        return True
 
-def filterPoints(points, path):
-	filteredPoints=[point for point in points if point not in path]
-	return filteredPoints
 
-def findPoints(maze, startingPoint):
-	"""print("Starting point:")
-	print(startingPoint)"""
-	directions=[[0, -1], [0, 1], [-1, 0], [1, 0]]
-	foundPoints=[]
-	for direction in directions:
-		checkedPoint={
-		'x':startingPoint['x']+direction[0],
-		'y':startingPoint['y']+direction[1]
-		}
-		try:
-			pointOnMap=maze[checkedPoint['x']][checkedPoint['y']]
-			if pointIsAccessible(pointOnMap):
-				foundPoints.append(checkedPoint)
-		except IndexError:
-			foundPoints.append(checkedPoint)
-
-	return foundPoints
-
-def pointIsAccessible(pointOnMap):
-	if(pointOnMap=="-"):
-		return True
-	return False
-
-#finds one path
-print(findPath(maze, [{'x':1, 'y':0}]))
-
-#finds all paths' coordinates
-print(findPaths(maze, [{'x':1, 'y':0}]))
+mazeStartingPoint = {'x': 1, 'y': 0}
+maze = Maze(rawMaze, mazeStartingPoint)
+print(maze.findShortestPath())
