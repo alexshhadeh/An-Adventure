@@ -1,21 +1,23 @@
 import os
+import random
 import time
+from src.CombatSystem import CombatSystem
 
 
 def handle_error(error, tile=""):
     os.system('cls')
 
-    if "empty_file":
+    if error == "empty_file":
         print("File is empty.")
-    if "maze_one_line":
+    elif error == "maze_one_line":
         print("Maze cannot be one line.")
-    if "maze_not_rectangle":
+    elif error == "maze_not_rectangle":
         print('Maze must have rectangular shape.')
-    if "unknown_tile":
+    elif error == "unknown_tile":
         print('find foreign tile : ' + tile + ".")
-    if "starting_tile_not_found":
+    elif error == "starting_tile_not_found":
         print('Starting tile must be (1,0).')
-    if _:
+    else:
         print("Error occurred.")
 
     exit(1)
@@ -60,8 +62,9 @@ class Maze:
             handle_error("maze_one_line")
         check_tiles(maze)
         self.maze = maze
+        self.__print_maze()
 
-    def print_maze(self):
+    def __print_maze(self, msg=""):
         str_out = ""
         for line in self.maze:
             for tile in line:
@@ -69,23 +72,38 @@ class Maze:
             str_out = str_out + "\n"
 
         os.system("cls")
-
-        if self.is_path_found:
-            print("Here is a shortest path\n")
+        if msg == "":
+            if self.is_path_found:
+                print("Here is a shortest path\n")
+            else:
+                print("The new maze\n")
         else:
-            print("The new maze\n")
+            print(msg)
 
         print(str_out)
 
-    def adventure(self, short_path):
-        encounters = 0
-        # short_path = [{'x': 1, 'y': 0}, {'x': 1, 'y': 1}, {'x': 1, 'y': 2}, {'x': 2, 'y': 2},
-        #               {'x': 3, 'y': 2}, {'x': 3, 'y': 3}, {'x': 3, 'y': 4}]
+    def adventure(self, short_path, cs_user: CombatSystem):
+        encounters_number = len(short_path) // 2
+        if encounters_number == 0:
+            encounters_number += 1
+        encounter_tiles = []
+        for encounter in range(encounters_number):
+            encounter_tiles.append(random.choice(short_path))
+        enc_i = 0
         for tile in short_path:
-            for coord, val in tile.items():
-                self.next_tile(tile)
+            if tile == encounter_tiles[enc_i]:
+                cs_user.generate_battle()
+            for i in range(2):
+                current_tile = []
+                for k, v in tile.items():
+                    current_tile.append(v)
+            self.maze[current_tile[0]][current_tile[1]] = "o"
+            os.system("cls")
+            print("Going to: ({x},{y})".format(x=current_tile[0], y=current_tile[1]))
+            time.sleep(1)
+            self.__print_maze("You are at: ({x},{y})".format(x=current_tile[0], y=current_tile[1]))
+            time.sleep(1)
+            if enc_i < encounters_number-1:
+                enc_i += 1
 
-    def __next_tile(self, tile):
-        self.maze[tile[0]][tile[1]] = "o"
-        self.__print_maze()
-        time.sleep(0.5)
+        print("Hooray, you have found the exit!")
