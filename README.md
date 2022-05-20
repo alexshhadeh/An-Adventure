@@ -14,7 +14,7 @@ The file contains the maze only. The maze consists of `X` and `-`, where `-` are
 
 ## How to play?
 
-Download the [game files](https://git.syberry.com/syberry-academy/syberry-academy-season-8/crew-b108-project/-/archive/dev/crew-b108-project-dev.zip) from the `dev` branch. Unpack them if zipped, open command line in the root folder, and type `python .\Game.py [path_to_file_with_maze]`. The game will now start.
+Download the game files (clone this branch of this repo). Unpack them if zipped, open command line in the root folder, and type `python .\Game.py [path_to_file_with_maze]`. The game will now start.
 
 Another example:
 `python .\Game.py maps/case-1.txt`
