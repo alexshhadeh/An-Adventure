@@ -17,6 +17,8 @@ def handle_error(error, tile=""):
         print('find foreign tile : ' + tile + ".")
     elif error == "starting_tile_not_found":
         print('Starting tile must be (1,0).')
+    elif error == "no_exit":
+        print('The maze has no exit.')
     else:
         print("Error occurred.")
 
@@ -35,6 +37,7 @@ def check_tiles(maze):
 class Maze:
 
     def __init__(self, path):
+
         if os.stat(path).st_size == 0:
             handle_error("empty_file")
 
@@ -74,7 +77,7 @@ class Maze:
         os.system("cls")
         if msg == "":
             if self.is_path_found:
-                print("Here is a shortest path\n")
+                print("Here is the shortest path\n")
             else:
                 print("The new maze\n")
         else:
@@ -83,6 +86,8 @@ class Maze:
         print(str_out)
 
     def adventure(self, short_path, cs_user: CombatSystem):
+        if len(short_path) == 1 or len(short_path) == 0:
+            handle_error("no_exit")
         encounters_number = len(short_path) // 2
         if encounters_number == 0:
             encounters_number += 1
