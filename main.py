@@ -17,12 +17,13 @@ class Maze:
         self.createdNewBranch = False
 
     def findAllPaths(self):
-        self.findPath([self.startingPoint])
+        onePath = self.findPath([self.startingPoint])
         while self.createdNewBranch:
             self.createdNewBranch = False
             for path in self.branches:
                 self.findPath(path)
-
+        if len(self.branches)==0:
+        	self.branches.append(onePath)
         return self.branches
 
     def findShortestPath(self):
