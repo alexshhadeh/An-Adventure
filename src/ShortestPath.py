@@ -37,7 +37,7 @@ class ShortestPath:
         foundPoints = self.filterPoints(self.findPoints(currentPoint), path)
 
         for point in foundPoints:
-            if self.isInMaze(point) is False:
+            if self.isInMaze(point) is False and point!={'x': 1, 'y': -1}:
                 return path
 
         if len(foundPoints) > 1:
