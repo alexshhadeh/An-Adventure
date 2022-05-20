@@ -1,4 +1,3 @@
-import os
 import random
 import time
 import d20
@@ -15,7 +14,6 @@ class CombatSystem:
         self.victories = 0
 
     def character_select(self):
-        # os.system("cls")
         print("Select your character:\nWarrior\tMage\tRanger")
         self.__combat_style = input()
         if self.__combat_style not in ["Warrior", "Mage", "Ranger"]:
