@@ -1,21 +1,23 @@
 import os
+import time
 
 
 def handle_error(error, tile=""):
     os.system('cls')
-    match error:
-        case "empty_file":
-            print("File is empty.")
-        case "maze_one_line":
-            print("Maze cannot be one line.")
-        case "maze_not_rectangle":
-            print('Maze must have rectangular shape.')
-        case "unknown_tile":
-            print('find foreign tile : ' + tile + ".")
-        case "starting_tile_not_found":
-            print('Starting tile must be (1,0).')
-        case _:
-            print("Error occurred.")
+
+    if "empty_file":
+        print("File is empty.")
+    if "maze_one_line":
+        print("Maze cannot be one line.")
+    if "maze_not_rectangle":
+        print('Maze must have rectangular shape.')
+    if "unknown_tile":
+        print('find foreign tile : ' + tile + ".")
+    if "starting_tile_not_found":
+        print('Starting tile must be (1,0).')
+    if _:
+        print("Error occurred.")
+
     exit(1)
 
 
@@ -74,3 +76,16 @@ class Maze:
             print("The new maze\n")
 
         print(str_out)
+
+    def adventure(self, short_path):
+        encounters = 0
+        # short_path = [{'x': 1, 'y': 0}, {'x': 1, 'y': 1}, {'x': 1, 'y': 2}, {'x': 2, 'y': 2},
+        #               {'x': 3, 'y': 2}, {'x': 3, 'y': 3}, {'x': 3, 'y': 4}]
+        for tile in short_path:
+            for coord, val in tile.items():
+                self.next_tile(tile)
+
+    def __next_tile(self, tile):
+        self.maze[tile[0]][tile[1]] = "o"
+        self.__print_maze()
+        time.sleep(0.5)
