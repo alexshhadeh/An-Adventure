@@ -1,12 +1,10 @@
-rawMaze = [['XXXXX'], ['---XX'], ['XX-XX'], ['XX---'], ['XX-XX']]
-
-
-class Maze:
+class ShortestPath:
 
     def __init__(self, rawMaze, startingPoint):
         self.maze = rawMaze
-        for (i, v) in enumerate(self.maze):
-            self.maze[i] = list(v[0])
+        # for (i, v) in enumerate(self.maze):
+        #     self.maze[i] = list(v[0])
+        self.maze = rawMaze
         self.startingPoint = startingPoint
         self.branches = []
         self.createdNewBranch = False
@@ -65,8 +63,8 @@ class Maze:
 
     def isInMaze(self, point):
         if (point['x'] < 0 or point['y'] < 0 or
-           point['x'] > len(self.maze) - 1 or
-           point['y'] > len(self.maze) - 1):
+                point['x'] > len(self.maze) - 1 or
+                point['y'] > len(self.maze) - 1):
             return False
         else:
             return True
@@ -106,8 +104,3 @@ class Maze:
         if pointOnMap == '-':
             return True
         return False
-
-
-mazeStartingPoint = {'x': 1, 'y': 0}
-maze = Maze(rawMaze, mazeStartingPoint)
-print(maze.findShortestPath())
