@@ -1,6 +1,6 @@
 class ShortestPath:
 
-    def __init__(self, rawMaze, startingPoint):
+    def __init__(self, rawMaze, startingPoint={'x': 1, 'y': 0}):
         self.maze = rawMaze
         # for (i, v) in enumerate(self.maze):
         #     self.maze[i] = list(v[0])
