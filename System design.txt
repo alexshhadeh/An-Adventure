@@ -1,0 +1,64 @@
+class ShortestPath
+input: maze, starting point ((1, 0) by default)
+
+function findPath(path)
+a recursive function, at first path consists only the starting point, and every time the function adds one point to the path and reruns itself
+
+function findAllPaths()
+runs findPath() function and returns all of the possible paths in an array
+
+function findShortestPath()
+returns the shortest path from the set returned by findAllPaths
+
+function isThereAnExit(point)
+returns an information whether there is an exit next to the input point
+
+function isInMaze(point)
+returns an information whether the point is in maze or outside of it
+
+function filterPoints(points, path)
+filters provided points so that the points that are already in the path aren't included (to prevent going back to the beginning)
+
+function pointIsAccessible(pointOnMap)
+returns an information if the input point is an obstacle or a possible step
+
+function findPoints(startingPoint)
+returns points around the input point that can create the path
+
+function findAllPossiblePoints(startingPoint)
+returns all the possible points around the input point
+
+---------
+
+function handle_error(error, tile)
+input: error name, tile(blaank by default)
+Prints error message.
+
+function check_tiles(maze)
+input: maze array
+Throws error if tile at (1,0) not "" or if tile is not "x" or "-".
+
+class Maze
+input: path to file with maze
+Creaates maze array, invokes checks, prints array if recognised.
+
+function print_maze(message)
+input: message to describe maze state(blank by default)
+Prints map array with message.
+
+function adventure(shortest_path, user_instance_for_character)
+input: shortest path to go by, user_instance_for_character is a base foor character select
+Function checks whether the path has the end. Character selection. Traverse path with encounter(-s) along the way
+
+---------
+
+class CombatSystem
+initialize user instance
+
+function character_select()
+input: user interaction through terminal
+Sets combat style and rooll modifiers based on input
+
+function generate_battle()
+input: user interaction through terminal, monster(blank by default) if the input is wrong
+Generates monster encounter, and proceeds with it taking to account user selected character and action against the monster.
